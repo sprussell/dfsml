@@ -4,6 +4,9 @@
 # Mac OSX folder style
 .DS_Store
 
+# PyCharm files
+.idea/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
