@@ -6,6 +6,7 @@ class DraftKingsScorer(object):
   A class for computing a player's score based on the Draft Kings scoring rubric
   """
   def __init__(self):
+    # Offensive categories
     self.passing_tds_pts = 4
     self.passing_yds_pts = 0.04
     self.passing_yds_300_bonus = 3
@@ -24,9 +25,21 @@ class DraftKingsScorer(object):
     self.receiving_twoptm_pts = 2
     self.rushing_twoptm_pts = 2
 
-  def score(self, year, week=range(1, 18)):
+    # Defensive categories
+    self.defense_sk_pts = 1
+    self.defense_int_pts = 2
+    self.defense_frec_pts = 2
+    self.kickret_tds_pts = 6
+    self.puntret_tds_pts = 6
+    self.defense_int_tds_pts = 6
+    self.defense_frec_tds_pts = 6
+    self.defense_misc_tds_pts = 6
+    self.defense_safe_pts = 2
+    self.blocked_kick_pts = 2
+
+  def score(self, year, week=None):
     games = nflgame.games_gen(year, week)
-    players = nflgame.combine_game_stats(games)
+    players = nflgame.combine_play_stats(games)
     output = {}
     for p in players:
       score = 0
