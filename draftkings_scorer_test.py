@@ -45,5 +45,5 @@ for p in players.defense().sort('defense_tds').limit(5):
 # Write out all player stats for each week as a csv
 year = 2014
 for week in range(1, 18):
-  nflgame.combine(
+  nflgame.combine_play_stats(
       nflgame.games(year, week)).csv('./stats/player_stats_wk%02d.csv' % week)
