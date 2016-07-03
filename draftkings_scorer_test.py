@@ -4,7 +4,7 @@ from team_defense import TeamDefense
 
 # Print top 10 scorers for weeks 1-3 of 2015
 for w in range(1, 4):
-  scores = DraftKingsScorer().score(year=2015, week=w)
+  scores = DraftKingsScorer().get_scores(year=2015, week=w)
   sorted_scores = sorted(scores, key=scores.get, reverse=True)
   print('Week {0:d}\n-----'.format(w))
   for s in sorted_scores[1:10]:
@@ -19,7 +19,7 @@ den_defense.get_team_stats(players, t='DEN')
 print 'DEN sacks: {0:f}'.format(den_defense.defense_sk)
 print 'DEN interceptions: {0:f}'.format(den_defense.defense_int)
 
-# Print all team abbreivations
+# Print all team abbreviations
 for t in nflgame.teams:
   print t[0] + ', ',
 print '\n'
@@ -41,3 +41,9 @@ print 'Total interceptions: {0:d}\n'.format(total_int)
 # Print top 5 defensive touchdown earners
 for p in players.defense().sort('defense_tds').limit(5):
   print '%s: %s' % (p.name, p.formatted_stats())
+
+# Write out all player stats for each week as a csv
+year = 2014
+for week in range(1, 18):
+  nflgame.combine(
+      nflgame.games(year, week)).csv('./stats/player_stats_wk%02d.csv' % week)

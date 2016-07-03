@@ -1,5 +1,5 @@
+import math
 import nflgame
-
 
 class DraftKingsScorer(object):
   """
@@ -37,7 +37,7 @@ class DraftKingsScorer(object):
     self.defense_safe_pts = 2
     self.blocked_kick_pts = 2
 
-  def score(self, year, week=None):
+  def get_scores(self, year, week=None):
     games = nflgame.games_gen(year, week)
     players = nflgame.combine_play_stats(games)
     output = {}
@@ -63,3 +63,38 @@ class DraftKingsScorer(object):
       output[p.name] = score
 
     return output
+
+  def score(self, p):
+    score = 0
+    if not math.isnan(p.passing_tds):
+      score += p.passing_tds * self.passing_tds_pts
+    if not math.isnan(p.passing_yds):
+      score += p.passing_yds * self.passing_yds_pts
+      score += self.passing_yds_300_bonus if p.passing_yds >= 300 else 0
+    if not math.isnan(p.passing_ints):
+      score += p.passing_ints * self.passing_ints_pts
+    if not math.isnan(p.rushing_yds):
+      score += p.rushing_yds * self.rushing_yds_pts
+      score += self.rushing_yds_100_bonus if p.rushing_yds >= 100 else 0
+    if not math.isnan(p.rushing_tds):
+      score += p.rushing_tds * self.rushing_tds_pts
+    if not math.isnan(p.receiving_yds):
+      score += p.receiving_yds * self.receiving_yds_pts
+      score += self.receiving_yds_100_bonus if p.receiving_yds >= 100 else 0
+    if not math.isnan(p.receiving_rec):
+      score += p.receiving_rec * self.receiving_rec_pts
+    if not math.isnan(p.receiving_tds):
+      score += p.receiving_tds * self.receiving_tds_pts
+    if not math.isnan(p.puntret_tds):
+      score += p.puntret_tds * self.puntret_tds_pts
+    if not math.isnan(p.kickret_tds):
+      score += p.kickret_tds * self.kickret_tds_pts
+    if not math.isnan(p.fumbles_lost):
+      score += p.fumbles_lost * self.fumbles_lost_pts
+    if not math.isnan(p.passing_twoptm):
+      score += p.passing_twoptm * self.passing_twoptm_pts
+    if not math.isnan(p.rushing_twoptm):
+      score += p.rushing_twoptm * self.rushing_twoptm_pts
+    if not math.isnan(p.receiving_twoptm):
+      score += p.receiving_twoptm * self.receiving_twoptm_pts
+    return score
